@@ -10,8 +10,8 @@ My First i3 Rice ;-)
 - File Manager : dolphin
 - Cli FM : yazi
 - Text Editor : neovim
-  
+- wall : feh 
 ```bash
-alacritty i3status rofi wofi brave-browser dolphin yazi neovim fastfetch cmatrix cava sddm
+alacritty i3status rofi wofi brave-browser dolphin yazi neovim fastfetch cmatrix cava sddm feh i3blocks i3lock 
 ```
 > - i will add all dots and browser ,vim plugins soon ;)
