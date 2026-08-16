@@ -142,7 +142,7 @@ mode "resize" {
 exec --no-startup-id picom -b
 exec --no-startup-id dunst
 exec --no-startup-id xss-lock -- i3lock
-exec --no-startup-id feh --bg-fill "$HOME/Pictures/wallpapers/squarebw.png"
+exec --no-startup-id feh --bg-fill "$HOME/Pictures/wallpapers/squarebw.jpg"
 
 bar {
     font pango:Hack Nerd Font Mono 10

@@ -50,7 +50,8 @@ cp .config/i3status-rust/themes/*.toml ~/.config/i3status-rust/themes/
 
 # 5. wallpaper + st/dmenu
 mkdir -p ~/Pictures/wallpapers && cp wallpapers/* ~/Pictures/wallpapers/
-# edit ~/.config/i3/config autostart feh line if you change the filename
+# the i3 config autostarts feh with ~/Pictures/wallpapers/squarebw.jpg (included,
+# a 4K-downscaled copy of the original 173MB PNG — drop in your own files too)
 # build st (custom build with Ctrl+Shift+C/V copy-paste) and dmenu 5.4
 
 # 6. reload
