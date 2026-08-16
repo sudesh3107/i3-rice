@@ -1,0 +1,37 @@
+[theme]
+theme = "plain"
+overrides = { idle_fg = "#c4c9c3", idle_bg = "#142711", info_fg = "#7E2E85", info_bg = "#142711", good_fg = "#926C6D", good_bg = "#142711", warning_fg = "#AC676E", warning_bg = "#142711", critical_fg = "#4BFB54", critical_bg = "#142711", separator_fg = "#637560", separator_bg = "#142711", alternating_tint_bg = "#142711" }
+
+[icons]
+icons = "none"
+
+[[block]]
+block = "cpu"
+interval = 1
+format = " $utilization " 
+
+[[block]]
+block = "memory"
+format = " $mem_used " 
+
+[[block]]
+block = "disk_space"
+path = "/"
+format = " $available "
+alert = 5.0
+
+[[block]]
+block = "battery"
+interval = 30
+format = " $percentage "
+
+[[block]]
+block = "sound"
+
+[[block]]
+block = "net"
+
+[[block]]
+block = "time"
+interval = 1
+format = " $timestamp.datetime(f:'%a %d/%m %R') "

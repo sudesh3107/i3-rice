@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Wal-i3 bridge: inject pywal colors into the i3 config's wal-begin/wal-end block
+# and rewrite the i3status-rust overrides line. Falls back to BreadOnPenguins
+# defaults if the wal cache is missing. Requires the i3 session to be restarted
+# (i3-msg restart) afterwards to take effect.
+
+CACHE="$HOME/.cache/wal/colors.json"
+CFG_I3="$HOME/.config/i3/config"
+CFG_RS="$HOME/.config/i3status-rust/config.toml"
+
+BOP_I3='set $bg #30272b
+set $border #443c40
+set $fg #F38B58
+set $selfg #30272b
+set $selborder #443c40
+set $selbg #F38B58
+set $urgent #DBB77E'
+
+if [ -f "$CACHE" ]; then
+  python3 - "$CACHE" "$CFG_I3" "$CFG_RS" <<'EOF'
+import json, re, sys
+c = json.load(open(sys.argv[1]))
+bg = c["special"]["background"]
+fg = c["special"]["foreground"]
+col = c["colors"]
+border = col["color8"]
+urgent = col["color3"]
+block = f"set $bg {bg}\nset $border {border}\nset $fg {fg}\nset $selfg {bg}\nset $selborder {border}\nset $selbg {fg}\nset $urgent {urgent}\n"
+t = open(sys.argv[2]).read()
+t = re.sub(r'(?ms)^# wal-begin\n.*^# wal-end\n', f"# wal-begin\n{block}# wal-end\n", t)
+open(sys.argv[2], "w").write(t)
+overrides = f'overrides = {{ idle_fg = "{fg}", idle_bg = "{bg}", info_fg = "{col["color4"]}", info_bg = "{bg}", good_fg = "{col["color2"]}", good_bg = "{bg}", warning_fg = "{col["color3"]}", warning_bg = "{bg}", critical_fg = "{col["color1"]}", critical_bg = "{bg}", separator_fg = "{border}", separator_bg = "{bg}", alternating_tint_bg = "{bg}" }}'
+r = open(sys.argv[3]).read()
+open(sys.argv[3], "w").write(re.sub(r'^overrides = .*$', overrides, r, flags=re.M))
+EOF
+else
+  python3 - "$CFG_I3" <<EOF
+import re, sys
+t = open(sys.argv[1]).read()
+t = re.sub(r'(?ms)^# wal-begin\n.*^# wal-end\n', "# wal-begin\n$BOP_I3\n# wal-end\n", t)
+open(sys.argv[1], "w").write(t)
+EOF
+fi

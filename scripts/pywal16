@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# post-wal refresh script, BreadOnPenguins-style
+
+# xresources (st, dmenu, qutebrowser)
+xrdb -merge ~/.cache/wal/colors.Xresources
+
+# alacritty (toml colorscheme from wal cache)
+python3 - <<'EOF'
+import json
+with open(f"{__import__('os').path.expanduser('~')}/.cache/wal/colors.json") as f:
+    c = json.load(f)
+block = "\n".join([
+    "[colors]",
+    "draw_bold_text_with_bright_colors = true",
+    "",
+    "[colors.primary]",
+    f'background = "{c["special"]["background"]}"',
+    f'foreground = "{c["special"]["foreground"]}"',
+    "",
+    "[colors.normal]",
+] + [f'{k} = "{c["colors"][v]}"' for k, v in
+     [("black","color0"),("red","color1"),("green","color2"),("yellow","color3"),
+      ("blue","color4"),("magenta","color5"),("cyan","color6"),("white","color7")]] + [
+    "",
+    "[colors.bright]",
+] + [f'{k} = "{c["colors"][v]}"' for k, v in
+     [("black","color8"),("red","color9"),("green","color10"),("yellow","color11"),
+      ("blue","color12"),("magenta","color13"),("cyan","color14"),("white","color15")]])
+path = f"{__import__('os').path.expanduser('~')}/.config/alacritty/alacritty.toml"
+text = open(path).read()
+import re
+text = re.sub(r"\[colors\].*?\n(?=\[|\Z)", block + "\n", text, flags=re.S)
+open(path, "w").write(text)
+EOF
+# i3 + i3status-rust colors from the new palette
+wal-i3colors
+DISPLAY=:0 i3-msg restart
