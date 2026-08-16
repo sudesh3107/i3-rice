@@ -23,9 +23,57 @@ xss-lock + i3lock screen lock
 playerctl         media keys
 flameshot         screenshots
 pcmanfm, nvim, htop, qutebrowser, termusic, darktable — app bindings
+Hack Nerd Font (font, incl. Mono variant)
+alsa-utils (amixer), pipewire-pulse or pulseaudio
+x11-xserver-utils (xrdb), base-devel/build-essential + libx11-dev libxft-dev libxinerama-dev (build st/dmenu)
 ```
 
 Install `wal` (pywal16) into `~/.local/bin` so it shadows any distro pywal.
+
+## Per-distro dependencies
+
+### Arch
+
+```bash
+sudo pacman -S --needed i3-wm picom feh dunst xss-lock i3lock playerctl \
+  flameshot pcmanfm neovim htop qutebrowser darktable alsa-utils \
+  pipewire-pulse ttf-hack-nerd xorg-xrdb base-devel libxft libxinerama
+
+# AUR (use your helper, e.g. yay):
+yay -S i3status-rust-git pywal16 termusic
+
+# st (suckless, custom build) + dmenu 5.4: build from source, see below
+```
+
+### Debian / Ubuntu
+
+```bash
+sudo apt install i3 picom feh dunst xss-lock i3lock playerctl flameshot \
+  pcmanfm neovim htop qutebrowser darktable alsa-utils pipewire-pulse \
+  fonts-hack-nerd x11-xserver-utils build-essential libx11-dev libxft-dev \
+  libxinerama-dev
+
+# i3status-rust 0.36.1: NOT in distro repos (old versions use an incompatible
+# config schema) — download the v0.36.1 release binary or:
+cargo install i3status-rust --features pulseaudio_backend
+
+# pywal16 fork (wal) — distro `pywal` is the old original:
+pip install --user pywal16    # or clone https://github.com/eylles/pywal16
+
+# st + dmenu 5.4: build from source (below). termusic: not packaged — cargo install termusic
+```
+
+### st + dmenu (both distros)
+
+```bash
+git clone https://git.suckless.org/st && cd st
+# apply your own patches; the copy/paste shortcut remap is a config.h edit
+# (Ctrl+Shift+C / Ctrl+Shift+V for clipcopy/clippaste)
+make && sudo make install
+
+git clone https://git.suckless.org/dmenu && cd dmenu
+make && sudo make install   # stock 5.4 — no -c (centered) option
+```
 
 ## Installation
 
