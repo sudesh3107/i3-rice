@@ -7,7 +7,7 @@ A dwm-inspired i3 rice themed after the BreadOnPenguins echo colorscheme.
 - dwm-style keybindings (`mod4`), split layout (no tabs), gaps
 - pywal-driven theming: wallpaper → palette → i3, i3status-rust, st/dmenu (xrdb), alacritty
 - square corners everywhere, dual-kawase blur (picom, glx backend)
-
+>> This setup is configured only for me so don't waste your system for some errors :>
 ## Dependencies
 
 ```
